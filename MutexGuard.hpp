@@ -25,7 +25,7 @@ public:
 	MutexGuard& operator=(const MutexGuard &other) = delete;
 
 	//! Move assignment operator
-	MutexGuard& operator=(MutexGuard &&other) noexcept = default;
+	MutexGuard& operator=(MutexGuard &&other) noexcept = delete;
 
 
 	class MutexGuard_ptr
