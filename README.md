@@ -1,3 +1,6 @@
+[![C/C++ CI](https://github.com/ma0001/MutexGuard/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/ma0001/MutexGuard/actions/workflows/c-cpp.yml)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+
 # MutexGuard
 
 c++ mutex template similar to RUST's
