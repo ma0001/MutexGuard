@@ -52,7 +52,7 @@ int main()
 	return 0;
 }
 ```
-You can also specify recursive_mutex as the second argument of template
+You can also specify recursive_mutex as the second argument of MutexGuard
 ```c++
 	MutexGuard<Hoge, std::recursive_mutex> var {{0, 0}};
 	{
