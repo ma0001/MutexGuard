@@ -52,6 +52,21 @@ int main()
 	return 0;
 }
 ```
+You can also specify recursive_mutex as the second argument of template
+```c++
+	MutexGuard<Hoge, std::recursive_mutex> var {{0, 0}};
+	{
+		auto p = var.auto_lock();
+		assert(p);
+		auto p2 = var.auto_lock();
+		assert(p2);
+		p->a = 1;
+		p2->b = 2;
+	}
+	
+	Hoge res = *var.auto_lock();
+	assert(res.a == 1 && res.b == 2);
+```
 
 ## Licence
 
