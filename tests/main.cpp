@@ -11,28 +11,38 @@ int main()
 		int a;
 		long b;
 	};
-	
-	MutexGuard<Hoge>	var {{1, 2}};
 
-	std::thread th0([&]{
-		for(int i = 0; i < 100000; i++) {
-			auto p = var.auto_lock();
-			p->a++;
-			p->b--;
-		}});
-	std::thread th1([&]{
-		for(int i = 0; i < 100000; i++) {
-			auto p = var.auto_lock();
-			p->a--;
-			p->b++;
-		}});
+	{
+		MutexGuard<Hoge>	var {{1, 2}};
 
-	th0.join();
-	th1.join();
+		std::thread th0([&]{
+			for(int i = 0; i < 100000; i++) {
+				auto p = var.auto_lock();
+				p->a++;
+				p->b--;
+			}});
+		std::thread th1([&]{
+			for(int i = 0; i < 100000; i++) {
+				auto p = var.auto_lock();
+				p->a--;
+				p->b++;
+			}});
 
-	Hoge res = *var.auto_lock();
-	std::cout << "a:" << res.a << " b:" << res.b << std::endl;
-	assert(res.a == 1 && res.b == 2);
+		th0.join();
+		th1.join();
+
+		Hoge res = *var.auto_lock();
+		std::cout << "a:" << res.a << " b:" << res.b << std::endl;
+		assert(res.a == 1 && res.b == 2);
+	}
+	{
+		MutexGuard<Hoge>	var {{0, 0}};
+		auto p = var.try_auto_lock();
+		assert(p);
+		auto p2 = var.try_auto_lock();
+		assert(!p2);
+		
+	}
 	return 0;
 }
 

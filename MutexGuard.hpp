@@ -16,7 +16,7 @@ public:
 	}
 
 	//! Move constructor
-	MutexGuard(MutexGuard &&other) noexcept = default;
+	MutexGuard(MutexGuard &&other) noexcept = delete;
 
 	//! Destructor
 	virtual ~MutexGuard() noexcept = default;
@@ -35,8 +35,7 @@ public:
 		MutexGuard_ptr() = default;
 		MutexGuard_ptr(MutexGuard *data) : ref_(data)
 		{
-			ref_->mutex_.lock();
-			
+
 		}
 
 		//! Move constructor
@@ -67,11 +66,11 @@ public:
 			return *this;
 		}
 
-		T* operator->()  {
+		T* operator->()  const {
 			return &ref_->data_;
 		}
 
-		T operator*()  {
+		T operator*()  const {
 			return ref_->data_;
 		}
 		
@@ -80,6 +79,11 @@ public:
 		{
 			this->ref_->data = rhs;
 			return *this;			
+		}
+		
+		explicit operator bool() const  noexcept
+		{
+			return ref_ == nullptr ? false : true;
 		}
 		
 	protected:
@@ -91,8 +95,20 @@ public:
 	
     MutexGuard_ptr auto_lock()
 	{
+		mutex_.lock();
 		MutexGuard_ptr	ptr(this);
 		return ptr;
+	}
+
+	MutexGuard_ptr try_auto_lock()
+	{
+		if(mutex_.try_lock()) {
+			MutexGuard_ptr	ptr(this);
+			return ptr;
+		} else {
+			MutexGuard_ptr	ptr(nullptr);
+			return ptr;
+		}			
 	}
 
 protected:
