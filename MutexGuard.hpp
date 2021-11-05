@@ -70,7 +70,7 @@ public:
 			return &ref_->data_;
 		}
 
-		T operator*()  const {
+		T& operator*()  const {
 			return ref_->data_;
 		}
 		

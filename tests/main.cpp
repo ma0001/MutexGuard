@@ -36,13 +36,36 @@ int main()
 		assert(res.a == 1 && res.b == 2);
 	}
 	{
-		MutexGuard<Hoge>	var {{0, 0}};
+		MutexGuard<Hoge> var {{0, 0}};
 		auto p = var.try_auto_lock();
 		assert(p);
 		auto p2 = var.try_auto_lock();
 		assert(!p2);
-		
+
 	}
+	{
+		MutexGuard<int> var {1};
+		{
+			auto p = var.try_auto_lock();
+			*p += 1;
+		}
+		assert(*var.auto_lock() == 2);
+	}
+	{
+		MutexGuard<Hoge, std::recursive_mutex> var {{0, 0}};
+		{
+			auto p = var.auto_lock();
+			assert(p);
+			auto p2 = var.auto_lock();
+			assert(p2);
+			p->a = 1;
+			p2->b = 2;
+		}
+		
+		Hoge res = *var.auto_lock();
+		assert(res.a == 1 && res.b == 2);
+	}
+	
 	return 0;
 }
 
