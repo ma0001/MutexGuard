@@ -1,5 +1,6 @@
 
 #include <mutex>
+#include <chrono>
 
 template<typename T, typename M = std::mutex>
 class MutexGuard
@@ -93,7 +94,7 @@ public:
 
 	using pointer = MutexGuard_ptr;
 
-    MutexGuard_ptr auto_lock()
+	MutexGuard_ptr auto_lock()
 	{
 		mutex_.lock();
 		MutexGuard_ptr	ptr(this);
@@ -111,6 +112,30 @@ public:
 		}			
 	}
 
+	template <class _Rep, class _Period>
+	MutexGuard_ptr try_auto_lock_for(const std::chrono::duration<_Rep, _Period>& rel_time)
+	{
+		if(mutex_.try_lock_for(rel_time)) {
+			MutexGuard_ptr	ptr(this);
+			return ptr;
+		} else {
+			MutexGuard_ptr	ptr(nullptr);
+			return ptr;
+		}			
+	}
+
+	template <class _Clock, class _Duration>
+	MutexGuard_ptr try_auto_lock_until(const std::chrono::time_point<_Clock, _Duration>& abs_time)
+	{
+		if(mutex_.try_lock_until(abs_time)) {
+			MutexGuard_ptr	ptr(this);
+			return ptr;
+		} else {
+			MutexGuard_ptr	ptr(nullptr);
+			return ptr;
+		}			
+	}
+	
 protected:
 private:
 	friend MutexGuard_ptr;

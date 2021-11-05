@@ -2,6 +2,7 @@
 #include <cassert>
 #include <thread>
 #include <iostream>
+#include <unistd.h>
 
 #include "../MutexGuard.hpp"
 
@@ -65,6 +66,48 @@ int main()
 		
 		int res = *var.auto_lock();
 		assert(res == 4);
+	}
+	{
+		MutexGuard<int, std::timed_mutex> var {0};
+
+		{
+			auto p = var.try_auto_lock_for(std::chrono::seconds(1));
+			assert(p);
+			(*p)++;
+
+			std::thread th1([&]{
+				auto p2 = var.try_auto_lock_for(std::chrono::seconds(1));
+				assert(!p2);
+			});
+
+			th1.join();
+		}
+		
+		int res = *var.auto_lock();
+		assert(res == 1);
+
+	}
+	{
+		MutexGuard<int, std::timed_mutex> var {0};
+
+		{
+			
+			auto now = std::chrono::system_clock::now();
+			auto p = var.try_auto_lock_until(now + std::chrono::seconds(1));
+			assert(p);
+			(*p)++;
+
+			std::thread th1([&]{
+				auto p2 = var.try_auto_lock_until(now + std::chrono::seconds(1));
+				assert(!p2);
+			});
+
+			th1.join();
+		}
+		
+		int res = *var.auto_lock();
+		assert(res == 1);
+
 	}
 	
 	return 0;
