@@ -92,7 +92,7 @@ public:
 	};
 
 	using pointer = MutexGuard_ptr;
-	
+
     MutexGuard_ptr auto_lock()
 	{
 		mutex_.lock();
