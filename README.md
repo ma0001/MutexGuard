@@ -3,7 +3,7 @@
 
 # MutexGuard
 
-c++ mutex template similar to RUST's
+c++ mutex guarded variable similar to RUST's
 
 # About
 
