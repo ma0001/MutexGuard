@@ -3,6 +3,7 @@
 #include <thread>
 #include <iostream>
 #include <unistd.h>
+#include <complex>
 
 #include "../MutexGuard.hpp"
 
@@ -108,6 +109,27 @@ int main()
 		int res = *var.auto_lock();
 		assert(res == 1);
 
+	}
+	{
+		MutexGuard<int>   a {0};
+		MutexGuard<std::complex<float>, std::recursive_timed_mutex> c{{1.0f, 2.0f}};
+
+		{
+			auto p = a.auto_lock();
+			(*p)++;
+		}
+		assert(*a.auto_lock() == 1);
+
+		{
+			auto p = c.try_auto_lock_for(std::chrono::seconds(1));
+			if(p) {
+				p->real(4.0);
+				p->imag(1.0);
+			}
+		}
+		auto d = *c.auto_lock();
+		assert(d.real() == 4.0);
+		assert(d.imag() == 1.0);
 	}
 	
 	return 0;
