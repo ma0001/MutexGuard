@@ -1,5 +1,5 @@
 [![C/C++ CI](https://github.com/ma0001/MutexGuard/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/ma0001/MutexGuard/actions/workflows/c-cpp.yml)
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png "CC0")](http://creativecommons.org/publicdomain/zero/1.0/deed.ja)
 
 # MutexGuard
 
@@ -91,4 +91,4 @@ By specifying timed_mutex or recursive_timed_mutex, you can use try_auto_lock_un
 
 ## Licence
 
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png "CC0")](http://creativecommons.org/publicdomain/zero/1.0/deed.ja)
