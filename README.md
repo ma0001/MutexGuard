@@ -58,14 +58,10 @@ You can also specify recursive_mutex as the second argument of MutexGuard
 	MutexGuard<int, std::recursive_mutex> var {1};
 	{
 		auto p = var.auto_lock();
-		if(p) {
-			*p += 1;
-		}
+		*p += 1;
 		{
 			auto p2 = var.auto_lock();
-			if(p2) {
-				*p2 += 2;
-			}
+			*p2 += 2;
 		}
 	}
 	
@@ -79,7 +75,7 @@ By specifying timed_mutex or recursive_timed_mutex, you can use try_auto_lock_un
 	MutexGuard<int, std::timed_mutex> var {0};
 	{
 		auto p = var.try_auto_lock_for(std::chrono::seconds(1));
-		if(p) {
+		if(p) {		// check if timeout occurred
 			(*p)++
 		}
 	}
