@@ -1,3 +1,5 @@
+#ifndef MUTEXGUARD_H
+#define MUTEXGUARD_H
 
 #include <mutex>
 #include <chrono>
@@ -144,3 +146,7 @@ private:
 	T data_;
 
 };
+
+
+
+#endif /* MUTEXGUARD_H */
